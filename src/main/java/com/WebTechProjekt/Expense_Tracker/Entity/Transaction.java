@@ -1,4 +1,4 @@
-package Entity;
+package com.WebTechProjekt.Expense_Tracker.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +18,5 @@ public class Transaction {
     private String type;              // "EXPENSE" oder "INCOME"
     private String description;       // optionaler Text
     private Category category;        // Beziehung zu Category
-    private Users user;                // Beziehung zu User
+    private User user;                // Beziehung zu User
 }
