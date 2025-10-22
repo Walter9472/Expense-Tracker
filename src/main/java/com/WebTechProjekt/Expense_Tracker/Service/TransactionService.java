@@ -28,4 +28,15 @@ public class TransactionService {
     public Transaction saveTransaction(Transaction transaction) {
         return null;
     }
+
+    public Transaction updateTransaction() {
+        return null;
+    }
+
+
+    public Transaction deleteTransaction() {
+        return null;
+    }
+
+
 }
