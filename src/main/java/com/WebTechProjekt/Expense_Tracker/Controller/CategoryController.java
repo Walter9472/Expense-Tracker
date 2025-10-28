@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/et")
 public class CategoryController {
 
 
@@ -19,7 +20,7 @@ public class CategoryController {
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-    @GetMapping("/category{id}")
+    @GetMapping("/category/{id}")
     public Category getCategory(@PathVariable Long id){
         return categoryService.getCategory(id);
     }

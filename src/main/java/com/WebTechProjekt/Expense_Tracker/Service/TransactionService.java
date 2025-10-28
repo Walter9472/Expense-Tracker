@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
-    private final TransactionRepo transactionRepo;
+//    private final TransactionRepo transactionRepo;
 
     // In-Memory Liste für Beispieltransaktionen
     private static List<Transaction> transactions = new ArrayList<>();
@@ -28,9 +28,13 @@ public class TransactionService {
                 LocalDate.now().minusDays(3), "EXPENSE", "Tankfüllung"));
     }
 
-    @Autowired
-    public TransactionService(TransactionRepo transactionRepo) {
-        this.transactionRepo = transactionRepo;
+//    @Autowired
+//    public TransactionService(TransactionRepo transactionRepo) {
+//        this.transactionRepo = transactionRepo;
+//    }
+
+    public TransactionService(){
+        
     }
 
     public Transaction getTransaction(Long id) {

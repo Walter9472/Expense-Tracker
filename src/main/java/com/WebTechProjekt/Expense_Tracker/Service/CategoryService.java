@@ -15,7 +15,7 @@ public class CategoryService {
     // In-Memory Liste für Beispielkategorien
     private static List<Category> categories = new ArrayList<>();
 
-    private final CategoryRepo categoryRepo;
+    //private final CategoryRepo categoryRepo;
 
     static {
         categories.add(new Category(1L, "Lebensmittel", "Essen und Trinken", "#FF5733"));
@@ -24,10 +24,13 @@ public class CategoryService {
     }
 
 
-    @Autowired
-    public CategoryService(CategoryRepo categoryRepo) {
-        this.categoryRepo = categoryRepo;
+    //@Autowired
+    //public CategoryService(CategoryRepo categoryRepo) { this.categoryRepo = categoryRepo;}
+
+    public CategoryService() {
+
     }
+
 
     public Category getCategory(Long id)
     {
