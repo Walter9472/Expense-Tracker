@@ -14,7 +14,7 @@ public class TransactionController {
 
 
     private final TransactionService transactionService;
-
+    @Autowired
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
@@ -37,7 +37,7 @@ public class TransactionController {
 
     @PutMapping("transaction{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id,@RequestBody Transaction transaction){
-        Transaction updatedTransaction = transactionService.updateTransaction();
+        Transaction updatedTransaction = transactionService.updateTransaction(id,transaction);
 
         if(updatedTransaction != null){
             return ResponseEntity.ok(updatedTransaction);
@@ -48,7 +48,7 @@ public class TransactionController {
 
     @DeleteMapping("transaction{id}")
     public ResponseEntity<Transaction> deleteTransaction(@PathVariable Long id){
-        transactionService.deleteTransaction();
+        transactionService.deleteTransaction(id);
         return ResponseEntity.noContent().build();
     }
 
