@@ -51,13 +51,13 @@ public class CategoryService {
     public Category updateCategory(Long id, Category category) {
 
         for(int i = 0; i < categories.size();i++){
-            if(category.getId().equals(id)){
+            Category current = categories.get(i);
+            if(category.getId().equals(current.getId())){
                 category.setId(id);
                 categories.set(i,category);
                 return category;
             }
         }
-
         return null;
     }
 

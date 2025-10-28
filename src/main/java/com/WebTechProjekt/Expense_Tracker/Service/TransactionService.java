@@ -34,7 +34,7 @@ public class TransactionService {
 //    }
 
     public TransactionService(){
-        
+
     }
 
     public Transaction getTransaction(Long id) {
@@ -55,7 +55,8 @@ public class TransactionService {
     public Transaction updateTransaction(Long id, Transaction transaction) {
 
         for(int i = 0; i < transactions.size();i++){
-            if(transaction.getId().equals(id)){
+            Transaction current = transactions.get(i);
+            if(transaction.getId().equals(current.getId())){
                 transaction.setId(id);
                 transactions.set(i,transaction);
                 return transaction;
