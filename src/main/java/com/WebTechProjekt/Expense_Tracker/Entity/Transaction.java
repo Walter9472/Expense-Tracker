@@ -17,8 +17,13 @@ public class Transaction {
     private String title;             // z. B. "Einkauf im Supermarkt"
     private BigDecimal amount;
     private LocalDate date;
-    private String type;              // "EXPENSE" oder "INCOME"
+    private Type type;              // "EXPENSE" oder "INCOME"
     private String description;       // optionaler Text
     private Category category;        // Beziehung zu Category
     //private User user;                // Beziehung zu User
+
+    public enum Type{
+        EINKOMMEN,AUSGABEN
+    }
 }
+

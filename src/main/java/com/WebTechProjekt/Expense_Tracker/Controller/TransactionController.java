@@ -30,7 +30,7 @@ public class TransactionController {
         return transactionService.getAllTransactions();
     }
     @PostMapping("/transactions")
-    public ResponseEntity<Transaction> createTransation(@RequestBody Transaction transaction){
+    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction){
         Transaction savedTransaction = transactionService.saveTransaction(transaction);
         return ResponseEntity
                     .status(HttpStatus.CREATED)

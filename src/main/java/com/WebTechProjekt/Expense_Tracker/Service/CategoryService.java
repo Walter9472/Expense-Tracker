@@ -21,6 +21,7 @@ public class CategoryService {
         categories.add(new Category(1L, "Lebensmittel", "Essen und Trinken", "#FF5733"));
         categories.add(new Category(2L, "Transport", "Fahrten und Öffentliche Verkehrsmittel", "#33FF57"));
         categories.add(new Category(3L, "Freizeit", "Hobby und Unterhaltung", "#3357FF"));
+        categories.add(new Category(4L, "Gesundheit", "Medizinische Ausgaben und Vorsorge", "#FF33AA"));
     }
 
 
