@@ -19,6 +19,6 @@ public class Transaction {
     private LocalDate date;
     private String type;              // "EXPENSE" oder "INCOME"
     private String description;       // optionaler Text
-    //private Category category;        // Beziehung zu Category
+    private Category category;        // Beziehung zu Category
     //private User user;                // Beziehung zu User
 }

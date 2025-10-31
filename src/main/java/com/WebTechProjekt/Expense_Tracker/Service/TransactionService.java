@@ -1,5 +1,6 @@
 package com.WebTechProjekt.Expense_Tracker.Service;
 
+import com.WebTechProjekt.Expense_Tracker.Entity.Category;
 import com.WebTechProjekt.Expense_Tracker.Entity.Transaction;
 import com.WebTechProjekt.Expense_Tracker.Repository.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,11 @@ public class TransactionService {
 
     static {
         transactions.add(new Transaction(1L, "Einkauf im Supermarkt", new BigDecimal("75.50"),
-                LocalDate.now().minusDays(1), "EXPENSE", "Wöchentlicher Einkauf"));
+                LocalDate.now().minusDays(1), "EXPENSE", "Wöchentlicher Einkauf",new Category()));
         transactions.add(new Transaction(2L, "Gehalt", new BigDecimal("2500.00"),
-                LocalDate.now().minusDays(5), "INCOME", "Monatsgehalt"));
+                LocalDate.now().minusDays(5), "INCOME", "Monatsgehalt",new Category()));
         transactions.add(new Transaction(3L, "Benzin", new BigDecimal("40.00"),
-                LocalDate.now().minusDays(3), "EXPENSE", "Tankfüllung"));
+                LocalDate.now().minusDays(3), "EXPENSE", "Tankfüllung",new Category()));
     }
 
 //    @Autowired
