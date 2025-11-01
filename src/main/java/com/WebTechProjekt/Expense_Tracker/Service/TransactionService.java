@@ -22,11 +22,11 @@ public class TransactionService {
 
     static {
         transactions.add(new Transaction(1L, "Einkauf im Supermarkt", new BigDecimal("75.50"),
-                LocalDate.now().minusDays(1), "EXPENSE", "Wöchentlicher Einkauf",new Category()));
+                LocalDate.now().minusDays(1), Transaction.Type.AUSGABEN, "Wöchentlicher Einkauf",new Category()));
         transactions.add(new Transaction(2L, "Gehalt", new BigDecimal("2500.00"),
-                LocalDate.now().minusDays(5), "INCOME", "Monatsgehalt",new Category()));
+                LocalDate.now().minusDays(5),Transaction.Type.EINKOMMEN , "Monatsgehalt",new Category()));
         transactions.add(new Transaction(3L, "Benzin", new BigDecimal("40.00"),
-                LocalDate.now().minusDays(3), "EXPENSE", "Tankfüllung",new Category()));
+                LocalDate.now().minusDays(3),Transaction.Type.AUSGABEN , "Tankfüllung",new Category()));
     }
 
 //    @Autowired
