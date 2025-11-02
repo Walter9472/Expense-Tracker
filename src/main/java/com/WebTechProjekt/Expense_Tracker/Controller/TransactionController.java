@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,13 @@ public class TransactionController {
     public List<Transaction> getTransactions(){
         return transactionService.getAllTransactions();
     }
+
+
+    @GetMapping("/transactions/Balance")
+    public BigDecimal getBalance(){
+        return transactionService.getTotal();
+    }
+
     @PostMapping("/transactions")
     public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction){
         Transaction savedTransaction = transactionService.saveTransaction(transaction);

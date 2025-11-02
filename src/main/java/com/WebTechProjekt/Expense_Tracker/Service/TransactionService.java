@@ -27,6 +27,17 @@ public class TransactionService {
                 LocalDate.now().minusDays(5),Transaction.Type.EINKOMMEN , "Monatsgehalt",new Category()));
         transactions.add(new Transaction(3L, "Benzin", new BigDecimal("40.00"),
                 LocalDate.now().minusDays(3),Transaction.Type.AUSGABEN , "Tankfüllung",new Category()));
+        // Ergänzende 5 Transaktionen
+        transactions.add(new Transaction(4L, "Restaurantbesuch", new BigDecimal("60.00"),
+                LocalDate.now().minusDays(2), Transaction.Type.AUSGABEN, "Dinner mit Freunden", new Category()));
+        transactions.add(new Transaction(5L, "Büchereiausgabe", new BigDecimal("15.00"),
+                LocalDate.now().minusDays(4), Transaction.Type.AUSGABEN, "Kauf eines Buches", new Category()));
+        transactions.add(new Transaction(6L, "Nebeneinkommen", new BigDecimal("200.00"),
+                LocalDate.now().minusDays(6), Transaction.Type.EINKOMMEN, "Freelance Projekt", new Category()));
+        transactions.add(new Transaction(7L, "Fitnessstudio", new BigDecimal("35.00"),
+                LocalDate.now().minusDays(3), Transaction.Type.AUSGABEN, "Monatsbeitrag", new Category()));
+        transactions.add(new Transaction(8L, "Geschenk", new BigDecimal("100.00"),
+                LocalDate.now().minusDays(7), Transaction.Type.AUSGABEN, "Geburtstagsgeschenk", new Category()));
     }
 
 //    @Autowired
@@ -49,8 +60,17 @@ public class TransactionService {
     }
 
     public Transaction saveTransaction(Transaction transaction) {
+        if(transaction.getId() == null){
+            transaction.setId(generateUniqueId());
+        }
         transactions.add(transaction);
         return transaction;
+    }
+    private Long generateUniqueId() {
+        return transactions.stream()
+                .map(Transaction::getId)
+                .max(Long::compare) // Ermittelt die höchste vorhandene ID
+                .orElse(0L) + 1;    // Nächste ID um 1 erhöhen
     }
 
     public Transaction updateTransaction(Long id, Transaction transaction) {
@@ -71,5 +91,21 @@ public class TransactionService {
          transactions.removeIf(trans -> trans.getId().equals(id));
     }
 
+    public BigDecimal getTotal() {
 
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        BigDecimal totalExpense = BigDecimal.ZERO;
+
+        for(Transaction transaction : transactions){
+            if(transaction.getType().equals(Transaction.Type.EINKOMMEN)){
+                totalIncome = totalIncome.add(transaction.getAmount());
+            }
+            if (transaction.getType().equals(Transaction.Type.AUSGABEN)) {
+                totalExpense = totalExpense.add(transaction.getAmount());
+            }
+        }
+
+        return totalIncome.subtract(totalExpense);
+
+    }
 }
