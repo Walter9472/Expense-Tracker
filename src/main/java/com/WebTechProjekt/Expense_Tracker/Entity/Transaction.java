@@ -20,6 +20,7 @@ public class Transaction {
     private Type type;              // "EXPENSE" oder "INCOME"
     private String description;       // optionaler Text
     private Category category;        // Beziehung zu Category
+    private String owner;
     //private User user;                // Beziehung zu User
 
     public enum Type{

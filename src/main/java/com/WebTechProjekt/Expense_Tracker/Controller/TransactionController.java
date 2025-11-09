@@ -27,8 +27,8 @@ public class TransactionController {
     }
 
     @GetMapping("/transactions")
-    public List<Transaction> getTransactions(){
-        return transactionService.getAllTransactions();
+    public List<Transaction> getTransactions(@RequestParam("owner") String owner){
+        return transactionService.getAllTransactions(owner);
     }
 
 

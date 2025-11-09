@@ -26,8 +26,8 @@ public class CategoryController {
         return categoryService.getCategory(id);
     }
     @GetMapping("categories")
-    public List<Category> getAllCategories(){
-        return categoryService.getAllCategory();
+    public List<Category> getAllCategories(@RequestParam("owner") String owner){
+        return categoryService.getAllCategory(owner);
     }
     @PostMapping("/categories")
     public ResponseEntity<Category> createCategory(@RequestBody Category category){

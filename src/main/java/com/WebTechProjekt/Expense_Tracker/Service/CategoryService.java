@@ -1,8 +1,6 @@
 package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.Category;
-import com.WebTechProjekt.Expense_Tracker.Repository.CategoryRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +16,10 @@ public class CategoryService {
     //private final CategoryRepo categoryRepo;
 
     static {
-        categories.add(new Category(1L, "Lebensmittel", "Essen und Trinken", "#FF5733"));
-        categories.add(new Category(2L, "Transport", "Fahrten und Öffentliche Verkehrsmittel", "#33FF57"));
-        categories.add(new Category(3L, "Freizeit", "Hobby und Unterhaltung", "#3357FF"));
-        categories.add(new Category(4L, "Gesundheit", "Medizinische Ausgaben und Vorsorge", "#FF33AA"));
+        categories.add(new Category(1L, "Lebensmittel", "Essen und Trinken", "#FF5733",null));
+        categories.add(new Category(2L, "Transport", "Fahrten und Öffentliche Verkehrsmittel", "#33FF57",null));
+        categories.add(new Category(3L, "Freizeit", "Hobby und Unterhaltung", "#3357FF",null));
+        categories.add(new Category(4L, "Gesundheit", "Medizinische Ausgaben und Vorsorge", "#FF33AA",null));
     }
 
 
@@ -39,7 +37,7 @@ public class CategoryService {
         return optional.orElse(null);
     }
 
-    public List<Category> getAllCategory() {
+    public List<Category> getAllCategory(String owner) {
         return categories;
     }
 

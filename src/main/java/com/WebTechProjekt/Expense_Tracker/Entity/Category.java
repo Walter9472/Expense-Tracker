@@ -16,5 +16,6 @@ public class Category {
     private String name;
     private String description;
     private String color;      // z. B. für visuelle Darstellung im Frontend
+    private String owner;
     //private User user;         // falls jede*r Nutzer*in eigene Kategorien hat
 }
