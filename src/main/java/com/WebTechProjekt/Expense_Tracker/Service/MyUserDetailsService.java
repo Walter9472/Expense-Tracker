@@ -16,6 +16,7 @@ public class MyUserDetailsService implements UserDetailsService {
 //    @Autowired
 //    private UserRepo repo;
 //
+    @Autowired
     private UserService userService;
 
     @Override
@@ -25,8 +26,8 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = null;
 
         for(User user1 : userService.getAllUsers()){
-            assert false;
-            if(user.getUsername().equals(username)){
+            if(user1.getUsername().equals(username)){
+                user = user1;
                 return new UserPrincipal(user);
             }
         }
