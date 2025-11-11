@@ -3,7 +3,6 @@ package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.User;
 import com.WebTechProjekt.Expense_Tracker.Entity.UserPrincipal;
-import com.WebTechProjekt.Expense_Tracker.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,10 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-//
-//    @Autowired
-//    private UserRepo repo;
-//
     @Autowired
     private UserService userService;
 

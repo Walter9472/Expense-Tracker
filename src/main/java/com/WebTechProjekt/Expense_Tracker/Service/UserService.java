@@ -1,11 +1,8 @@
 package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.User;
-import com.WebTechProjekt.Expense_Tracker.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +12,12 @@ import java.util.List;
 @Service
 public class UserService {
 
-//    @Autowired
-//    private UserRepo userRepo;
-
-    @Autowired
-    AuthenticationManager authManager;
-
     @Autowired
     private JWTService jwtService;
 
     private BCryptPasswordEncoder encoder= new BCryptPasswordEncoder(12);
 
     private static final List<User> users = new ArrayList<>();
-
-    static {
-        users.add(new User());
-    }
 
     public List<User> getAllUsers() {
         return users;
@@ -45,13 +32,15 @@ public class UserService {
     }
 
     public String verify(User user) {
-        Authentication authentication =
-                authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        String token = jwtService.generateToken(user.getUsername());
-        System.out.println(token);
-        if(authentication.isAuthenticated())
-            return token;
+        for (User storedUser : users) {
+            if (storedUser.getUsername() != null && storedUser.getUsername().equals(user.getUsername())) {
+                if (encoder.matches(user.getPassword(), storedUser.getPassword())) {
+                    return jwtService.generateToken(storedUser.getUsername());
+                }
+                break;
+            }
+        }
 
-        return "fail";
+        throw new BadCredentialsException("Invalid username or password");
     }
 }
