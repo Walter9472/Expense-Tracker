@@ -16,6 +16,13 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private String role;        // z. B. "USER", "ADMIN"
-    private LocalDateTime createdAt;
+    private Role role;        // z. B. "USER", "ADMIN"
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+
+    public enum Role{
+        USER, ADMIN
+    }
+
 }
+
