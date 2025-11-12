@@ -66,11 +66,11 @@ public class TransactionService {
     }
 
     public Transaction getTransaction(Long id) {
-
-        Optional<Transaction> optional = transactions.stream()
-                .filter(trans -> trans.getId().equals(id) && Objects.equals(trans.getOwner(),SecurityUtils.getCurrentUsername()))
-                .findFirst();
-        return optional.orElse(null);
+        String owner = SecurityUtils.getCurrentUsername();
+        return transactions.stream()
+                .filter(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner))
+                .findFirst()
+                .orElse(null);
 
     }
 
@@ -98,11 +98,11 @@ public class TransactionService {
 
     public Transaction updateTransaction(Long id, Transaction payload) {
         String owner = SecurityUtils.getCurrentUsername();
-        for(int i = 0; i < transactions.size();i++){
+        for (int i = 0; i < transactions.size(); i++) {
             Transaction current = transactions.get(i);
-            if(Objects.equals(current.getId(),id)){
-                if (!Objects.equals(current.getOwner(), owner)){
-                    return null;
+            if (Objects.equals(current.getId(), id)) {
+                if (!Objects.equals(current.getOwner(), owner)) {
+                    return null; // fremde Transaktion
                 }
                 Transaction merged = new Transaction(
                         id,
@@ -114,9 +114,7 @@ public class TransactionService {
                         payload.getCategory(),
                         owner
                 );
-
-                transactions.set(i,merged);
-
+                transactions.set(i, merged);
                 return merged;
             }
         }
