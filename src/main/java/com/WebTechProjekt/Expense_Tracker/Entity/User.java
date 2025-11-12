@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public class User {
     //@Id
     private Long id;
-    private String username;
     private String email;
+    private String username;
     private String password;
-    private Role role;        // z. B. "USER", "ADMIN"
+    private Role role = Role.USER;        // z. B. "USER", "ADMIN"
     private LocalDateTime createdAt = LocalDateTime.now();
 
 

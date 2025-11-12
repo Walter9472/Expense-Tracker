@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,12 +24,17 @@ public class TransactionController {
     }
     @GetMapping("/transaction/{id}")
     public Transaction getTransaction(@PathVariable Long id){
-        return transactionService.getTransaction(id);
+        Transaction tx = transactionService.getTransaction(id);
+
+        if(tx == null){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        return tx;
     }
 
     @GetMapping("/transactions")
-    public List<Transaction> getTransactions(@RequestParam("owner") String owner){
-        return transactionService.getAllTransactions(owner);
+    public List<Transaction> getTransactions(){
+        return transactionService.getAllTransactions();
     }
 
 
@@ -48,17 +54,17 @@ public class TransactionController {
     @PutMapping("transaction/{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id,@RequestBody Transaction transaction){
         Transaction updatedTransaction = transactionService.updateTransaction(id,transaction);
-
-        if(updatedTransaction != null){
-            return ResponseEntity.ok(updatedTransaction);
-        }else{
-            return ResponseEntity.notFound().build();
+        if(updatedTransaction == null){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+        return  ResponseEntity.ok(updatedTransaction);
     }
 
     @DeleteMapping("transaction/{id}")
-    public ResponseEntity<Transaction> deleteTransaction(@PathVariable Long id){
-        transactionService.deleteTransaction(id);
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id){
+        if (!transactionService.deleteTransaction(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         return ResponseEntity.noContent().build();
     }
 

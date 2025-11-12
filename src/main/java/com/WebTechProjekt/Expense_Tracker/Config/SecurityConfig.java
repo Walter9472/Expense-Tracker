@@ -15,6 +15,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -31,8 +37,9 @@ public class SecurityConfig {
 
         return http
                 .csrf(customizer -> customizer.disable())
+                .cors(customizer -> customizer.configurationSource(corsConfigurationSource())) // ← CORS hinzufügen
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("register","login").permitAll()
+                        .requestMatchers("/register","/login").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
@@ -41,6 +48,33 @@ public class SecurityConfig {
                 .build();
 
     }
+
+    // CORS-Konfiguration Bean
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // Erlaubte Origins (Frontend-URL)
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        // Erlaubte HTTP-Methoden
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // Erlaubte Headers
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type","X-Requested-With"));
+
+        // Erlaube Credentials (für Cookies, falls benötigt)
+        configuration.setAllowCredentials(true);
+
+        // Cache-Dauer für Preflight-Requests
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);// Für alle Endpunkte
+
+        return source;
+    }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
@@ -53,7 +87,6 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-
     }
 
 

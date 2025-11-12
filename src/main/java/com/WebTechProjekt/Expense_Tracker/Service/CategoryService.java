@@ -1,11 +1,14 @@
 package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.Category;
+import com.WebTechProjekt.Expense_Tracker.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -37,30 +40,46 @@ public class CategoryService {
         return optional.orElse(null);
     }
 
-    public List<Category> getAllCategory(String owner) {
-        return categories;
+    public List<Category> getAllCategory() {
+        String owner = SecurityUtils.getCurrentUsername();
+
+        return categories.stream()
+                .filter(cat -> Objects.equals(cat.getOwner(), owner))
+                .collect(Collectors.toList());
     }
 
 
     public Category saveCategory(Category category) {
+        category.setOwner(SecurityUtils.getCurrentUsername());
         categories.add(category);
         return category;
     }
 
-    public Category updateCategory(Long id, Category category) {
-
+    public Category updateCategory(Long id, Category payload) {
+        String owner = SecurityUtils.getCurrentUsername();
         for(int i = 0; i < categories.size();i++){
             Category current = categories.get(i);
-            if(category.getId().equals(current.getId())){
-                category.setId(id);
-                categories.set(i,category);
-                return category;
+            if(Objects.equals(current.getId(), id)){
+                if (!Objects.equals(current.getOwner(), owner)) {
+                    return null;
+                }
+                Category merged = new Category(
+                        id,
+                        payload.getName(),
+                        payload.getDescription(),
+                        payload.getColor(),
+                        owner
+                );
+
+                categories.set(i, merged);
+                return merged;
             }
         }
         return null;
     }
 
-    public void deleteCategory(Long id) {
-        categories.removeIf(cat -> cat.getId().equals(id));
+    public boolean deleteCategory(Long id) {
+        String owner = SecurityUtils.getCurrentUsername();
+        return categories.removeIf(cat -> Objects.equals(cat.getId(), id) && Objects.equals(cat.getOwner(), owner));
     }
 }

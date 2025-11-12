@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,9 +26,10 @@ public class CategoryController {
     public Category getCategory(@PathVariable Long id){
         return categoryService.getCategory(id);
     }
+
     @GetMapping("categories")
-    public List<Category> getAllCategories(@RequestParam("owner") String owner){
-        return categoryService.getAllCategory(owner);
+    public List<Category> getAllCategories(){
+        return categoryService.getAllCategory();
     }
     @PostMapping("/categories")
     public ResponseEntity<Category> createCategory(@RequestBody Category category){
@@ -38,16 +40,17 @@ public class CategoryController {
     @PutMapping("/category/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category){
         Category updatedCategory = categoryService.updateCategory(id, category);
-        if(updatedCategory != null){
-            return ResponseEntity.ok(updatedCategory);
-        }else{
-            return ResponseEntity.notFound().build();
+        if(updatedCategory == null){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+        return ResponseEntity.ok(updatedCategory);
     }
 
     @DeleteMapping("/category/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
-        categoryService.deleteCategory(id);
+        if (!categoryService.deleteCategory(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         return ResponseEntity.noContent().build();
     }
 
