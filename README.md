@@ -55,3 +55,13 @@ Das Frontend (mit Vue.js) soll es den Benutzern ermöglichen:
 - **Monatsübersicht**: Zusammenfassung der monatlichen Ausgaben.
 
 
+
+## Deployment-Hinweis (Render & Co.)
+
+Damit das gehostete Frontend mit dem Backend kommunizieren kann, muss die erlaubte Origin des Frontends in der Spring-Konfiguration hinterlegt werden. Dies geschieht über die Property `app.cors.allowed-origins` (siehe `src/main/resources/application.properties`). Sie akzeptiert eine kommagetrennte Liste, z. B.:
+
+```
+app.cors.allowed-origins=http://localhost:5173,https://mein-frontend.onrender.com
+```
+
+Beim Deployment auf Render kann der Wert komfortabel über eine Environment-Variable überschrieben werden, sodass sowohl lokale Entwicklung als auch Produktionsbetrieb ohne Codeänderungen funktionieren.
