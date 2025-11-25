@@ -1,7 +1,9 @@
 package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.Category;
+import com.WebTechProjekt.Expense_Tracker.Repository.CategoryRepo;
 import com.WebTechProjekt.Expense_Tracker.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +18,9 @@ public class CategoryService {
     // In-Memory Liste für Beispielkategorien
     private static List<Category> categories = new ArrayList<>();
 
-    //private final CategoryRepo categoryRepo;
+
+
+    private final CategoryRepo categoryRepo;
 
     static {
         categories.add(new Category(1L, "Lebensmittel", "Essen und Trinken", "#FF5733",null));
@@ -26,12 +30,9 @@ public class CategoryService {
     }
 
 
-    //@Autowired
-    //public CategoryService(CategoryRepo categoryRepo) { this.categoryRepo = categoryRepo;}
+    @Autowired
+    public CategoryService(CategoryRepo categoryRepo) { this.categoryRepo = categoryRepo;}
 
-    public CategoryService() {
-
-    }
 
 
     public Category getCategory(Long id)

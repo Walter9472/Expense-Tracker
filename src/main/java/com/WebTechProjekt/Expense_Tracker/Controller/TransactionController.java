@@ -23,7 +23,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
     @GetMapping("/transaction/{id}")
-    public Transaction getTransaction(@PathVariable Long id){
+    public Transaction getTransaction(@PathVariable int id){
         Transaction tx = transactionService.getTransaction(id);
 
         if(tx == null){
@@ -52,7 +52,7 @@ public class TransactionController {
     }
 
     @PutMapping("transaction/{id}")
-    public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id,@RequestBody Transaction transaction){
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable int id,@RequestBody Transaction transaction){
         Transaction updatedTransaction = transactionService.updateTransaction(id,transaction);
         if(updatedTransaction == null){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -61,7 +61,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("transaction/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id){
+    public ResponseEntity<Void> deleteTransaction(@PathVariable int id){
         if (!transactionService.deleteTransaction(id)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

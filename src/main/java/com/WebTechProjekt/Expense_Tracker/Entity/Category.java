@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Category {
 
     @Id
-    private Long id;
+    private int id;
     private String name;
     private String description;
     private String color;      // z. B. für visuelle Darstellung im Frontend

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Transaction {
     @Id
-    private Long id;
+    private int id = 0;
     private String title;             // z. B. "Einkauf im Supermarkt"
     private BigDecimal amount;
     private LocalDate date;

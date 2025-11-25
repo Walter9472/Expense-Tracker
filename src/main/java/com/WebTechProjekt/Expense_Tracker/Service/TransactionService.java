@@ -2,7 +2,9 @@ package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.Category;
 import com.WebTechProjekt.Expense_Tracker.Entity.Transaction;
+import com.WebTechProjekt.Expense_Tracker.Repository.TransactionRepo;
 import com.WebTechProjekt.Expense_Tracker.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,10 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class TransactionService {
 
-//    private final TransactionRepo transactionRepo;
+    private final TransactionRepo transactionRepo;
 
     // In-Memory Liste für Beispieltransaktionen
-    private static List<Transaction> transactions = new ArrayList<>();
+    //private static List<Transaction> transactions = new ArrayList<>();
 
 //    static {
 //        transactions.add(new Transaction(1L, "Einkauf im Supermarkt", new BigDecimal("75.50"),
@@ -60,21 +62,106 @@ public class TransactionService {
 //    public TransactionService(TransactionRepo transactionRepo) {
 //        this.transactionRepo = transactionRepo;
 //    }
+//
+//
+//    public Transaction getTransaction(Long id) {
+//        String owner = SecurityUtils.getCurrentUsername();
+//        return transactions.stream()
+//                .filter(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner))
+//                .findFirst()
+//                .orElse(null);
+//    }
+//
+//    public List<Transaction> getAllTransactions() {
+//        String owner = SecurityUtils.getCurrentUsername();
+//        return transactions.stream()
+//                .filter(tx -> Objects.equals(tx.getOwner(), owner))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public Transaction saveTransaction(Transaction transaction) {
+//        transaction.setOwner(SecurityUtils.getCurrentUsername());
+//        if(transaction.getId() == null){
+//            transaction.setId(generateUniqueId());
+//        }
+//        transactions.add(transaction);
+//        return transaction;
+//    }
+//    private Long generateUniqueId() {
+//        return transactions.stream()
+//                .map(Transaction::getId)
+//                .max(Long::compare) // Ermittelt die höchste vorhandene ID
+//                .orElse(0L) + 1;    // Nächste ID um 1 erhöhen
+//    }
+//
+//    public Transaction updateTransaction(Long id, Transaction payload) {
+//        String owner = SecurityUtils.getCurrentUsername();
+//        for (int i = 0; i < transactions.size(); i++) {
+//            Transaction current = transactions.get(i);
+//            if (Objects.equals(current.getId(), id)) {
+//                if (!Objects.equals(current.getOwner(), owner)) {
+//                    return null; // fremde Transaktion
+//                }
+//                Transaction merged = new Transaction(
+//                        id,
+//                        payload.getTitle(),
+//                        payload.getAmount(),
+//                        payload.getDate(),
+//                        payload.getType(),
+//                        payload.getDescription(),
+//                        payload.getCategory(),
+//                        owner
+//                );
+//                transactions.set(i, merged);
+//                return merged;
+//            }
+//        }
+//        return null;
+//    }
+//
+//
+//    public boolean deleteTransaction(Long id) {
+//        String owner = SecurityUtils.getCurrentUsername();
+//        return transactions.removeIf(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner));
+//    }
+//
+//    public BigDecimal getTotal() {
+//        String owner = SecurityUtils.getCurrentUsername();
+//        return transactions.stream()
+//                .filter(tx -> Objects.equals(tx.getOwner(),owner))
+//                .map(tx -> tx.getType() == Transaction.Type.EINKOMMEN
+//                    ? tx.getAmount()
+//                    : tx.getAmount().negate())
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//
+//    }
 
-    public TransactionService(){
 
+    @Autowired
+    public TransactionService(TransactionRepo transactionRepo) {
+        this.transactionRepo = transactionRepo;
     }
 
-    public Transaction getTransaction(Long id) {
+    public Transaction getTransaction(int id) {
         String owner = SecurityUtils.getCurrentUsername();
-        return transactions.stream()
-                .filter(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner))
-                .findFirst()
-                .orElse(null);
+        Transaction transaction = transactionRepo.findById(id).orElse(null);
+
+
+        if(Objects.equals(transaction.getId(),id) && Objects.equals(transaction.getOwner(),owner)) {
+            return transaction;
+        }else
+            return null;
+
+//        return transactions.stream()
+//                .filter(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner))
+//                .findFirst()
+//                .orElse(null);
     }
+
 
     public List<Transaction> getAllTransactions() {
         String owner = SecurityUtils.getCurrentUsername();
+        List<Transaction> transactions = transactionRepo.findAll();
         return transactions.stream()
                 .filter(tx -> Objects.equals(tx.getOwner(), owner))
                 .collect(Collectors.toList());
@@ -82,58 +169,73 @@ public class TransactionService {
 
     public Transaction saveTransaction(Transaction transaction) {
         transaction.setOwner(SecurityUtils.getCurrentUsername());
-        if(transaction.getId() == null){
+        if(transaction.getId() == 0){
             transaction.setId(generateUniqueId());
         }
-        transactions.add(transaction);
+        transactionRepo.save(transaction);
         return transaction;
+//        transactions.add(transaction);
+//        return transaction;
     }
-    private Long generateUniqueId() {
+    private int generateUniqueId() {
+        List<Transaction> transactions = transactionRepo.findAll();
         return transactions.stream()
                 .map(Transaction::getId)
-                .max(Long::compare) // Ermittelt die höchste vorhandene ID
-                .orElse(0L) + 1;    // Nächste ID um 1 erhöhen
+                .max(Integer::compare) // Ermittelt die höchste vorhandene ID
+                .orElse(0) + 1;    // Nächste ID um 1 erhöhen
     }
 
-    public Transaction updateTransaction(Long id, Transaction payload) {
-        String owner = SecurityUtils.getCurrentUsername();
-        for (int i = 0; i < transactions.size(); i++) {
-            Transaction current = transactions.get(i);
-            if (Objects.equals(current.getId(), id)) {
-                if (!Objects.equals(current.getOwner(), owner)) {
-                    return null; // fremde Transaktion
-                }
-                Transaction merged = new Transaction(
-                        id,
-                        payload.getTitle(),
-                        payload.getAmount(),
-                        payload.getDate(),
-                        payload.getType(),
-                        payload.getDescription(),
-                        payload.getCategory(),
-                        owner
-                );
-                transactions.set(i, merged);
-                return merged;
-            }
-        }
-        return null;
+    public Transaction updateTransaction(int id, Transaction payload) {
+       String owner = SecurityUtils.getCurrentUsername();
+//        for (int i = 0; i < transactions.size(); i++) {
+//            Transaction current = transactions.get(i);
+//            if (Objects.equals(current.getId(), id)) {
+//                if (!Objects.equals(current.getOwner(), owner)) {
+//                    return null; // fremde Transaktion
+//                }
+//                Transaction merged = new Transaction(
+//                        id,
+//                        payload.getTitle(),
+//                        payload.getAmount(),
+//                        payload.getDate(),
+//                        payload.getType(),
+//                        payload.getDescription(),
+//                        payload.getCategory(),
+//                        owner
+//                );
+//                transactions.set(i, merged);
+//                return merged;
+//            }
+//        }
+
+        if(Objects.equals(payload.getId(),id) && Objects.equals(payload.getOwner(),owner)) {
+            return transactionRepo.save(payload);
+        }else
+            return null;
     }
 
 
-    public boolean deleteTransaction(Long id) {
+    public boolean deleteTransaction(int id) {
         String owner = SecurityUtils.getCurrentUsername();
-        return transactions.removeIf(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner));
+        Transaction transaction = transactionRepo.findById(id).orElse(null);
+        if(Objects.equals(transaction.getId(),id) && Objects.equals(transaction.getOwner(),owner)) {
+            transactionRepo.delete(transaction);
+            return true;
+        } else
+            return false;
     }
 
     public BigDecimal getTotal() {
         String owner = SecurityUtils.getCurrentUsername();
+        List<Transaction> transactions = transactionRepo.findAll();
         return transactions.stream()
                 .filter(tx -> Objects.equals(tx.getOwner(),owner))
                 .map(tx -> tx.getType() == Transaction.Type.EINKOMMEN
-                    ? tx.getAmount()
-                    : tx.getAmount().negate())
+                        ? tx.getAmount()
+                        : tx.getAmount().negate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     }
+
+
 }
