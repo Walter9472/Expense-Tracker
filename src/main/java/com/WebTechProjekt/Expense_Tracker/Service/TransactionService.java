@@ -71,7 +71,6 @@ public class TransactionService {
                 .filter(tx -> Objects.equals(tx.getId(), id) && Objects.equals(tx.getOwner(), owner))
                 .findFirst()
                 .orElse(null);
-
     }
 
     public List<Transaction> getAllTransactions() {

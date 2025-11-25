@@ -40,7 +40,6 @@ public class UserService {
                 break;
             }
         }
-
         throw new BadCredentialsException("Invalid username or password");
     }
 }

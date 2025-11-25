@@ -1,6 +1,7 @@
 package com.WebTechProjekt.Expense_Tracker.Entity;
 
 
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction {
-    //@Id
+    @Id
     private Long id;
     private String title;             // z. B. "Einkauf im Supermarkt"
     private BigDecimal amount;
