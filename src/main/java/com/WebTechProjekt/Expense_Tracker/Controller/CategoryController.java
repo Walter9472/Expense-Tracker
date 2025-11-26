@@ -23,7 +23,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
     @GetMapping("/category/{id}")
-    public Category getCategory(@PathVariable Long id){
+    public Category getCategory(@PathVariable int id){
         return categoryService.getCategory(id);
     }
 
@@ -38,18 +38,20 @@ public class CategoryController {
     }
 
     @PutMapping("/category/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category){
+    public ResponseEntity<Category> updateCategory(@PathVariable int id, @RequestBody Category category){
         Category updatedCategory = categoryService.updateCategory(id, category);
         if(updatedCategory == null){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Update failed: You are not authorized to edit this category or the category does not exist.");
         }
         return ResponseEntity.ok(updatedCategory);
     }
 
     @DeleteMapping("/category/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+    public ResponseEntity<Void> deleteCategory(@PathVariable int id){
         if (!categoryService.deleteCategory(id)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Deletion failed: You are not authorized to delete this category or the category does not exist.");
         }
         return ResponseEntity.noContent().build();
     }
