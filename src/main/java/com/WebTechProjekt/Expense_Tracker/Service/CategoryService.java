@@ -95,8 +95,9 @@ public class CategoryService {
     public List<Category> getAllCategory() {
         String owner = SecurityUtils.getCurrentUsername();
         List<Category> categories = categoryRepo.findAll();
+        String d = "default";
         return categories.stream()
-                .filter(cat -> Objects.equals(cat.getOwner(), owner))
+                .filter(cat -> Objects.equals(cat.getOwner(), owner) || Objects.equals(cat.getOwner(),d))
                 .collect(Collectors.toList());
     }
 
