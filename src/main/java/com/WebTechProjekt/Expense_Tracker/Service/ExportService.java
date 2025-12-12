@@ -37,7 +37,9 @@ public class ExportService {
     private String writeCsv(List<Transaction> transactions) throws IOException {
         StringWriter writer = new StringWriter();
 
-        CSVFormat format = CSVFormat.DEFAULT.builder()
+        // EXCEL-Format mit Semikolon für deutsche Excel-Versionen
+        CSVFormat format = CSVFormat.EXCEL.builder()
+                .setDelimiter(';')  // Semikolon für deutsches Excel
                 .setHeader(HEADERS)
                 .build();
 
