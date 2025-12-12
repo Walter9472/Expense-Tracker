@@ -169,21 +169,11 @@ public class TransactionService {
 
     public Transaction saveTransaction(Transaction transaction) {
         transaction.setOwner(SecurityUtils.getCurrentUsername());
-        if(transaction.getId() == 0){
-            transaction.setId(generateUniqueId());
-        }
-        transactionRepo.save(transaction);
-        return transaction;
-//        transactions.add(transaction);
-//        return transaction;
+        // ID wird automatisch durch @GeneratedValue (IDENTITY) und Datenbank generiert
+        return transactionRepo.save(transaction);
     }
-    private int generateUniqueId() {
-        List<Transaction> transactions = transactionRepo.findAll();
-        return transactions.stream()
-                .map(Transaction::getId)
-                .max(Integer::compare) // Ermittelt die höchste vorhandene ID
-                .orElse(0) + 1;    // Nächste ID um 1 erhöhen
-    }
+
+    // generateUniqueId Methode entfernt, da nicht mehr benötigt
 
     public Transaction updateTransaction(int id, Transaction payload) {
        String owner = SecurityUtils.getCurrentUsername();

@@ -2,6 +2,8 @@ package com.WebTechProjekt.Expense_Tracker.Entity;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -17,7 +19,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Transaction {
     @Id
-    private int id = 0;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String title;             // z. B. "Einkauf im Supermarkt"
     private BigDecimal amount;
     private LocalDate date;
