@@ -2,6 +2,7 @@ package com.WebTechProjekt.Expense_Tracker.Service;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.User;
 import com.WebTechProjekt.Expense_Tracker.Repository.UserRepo;
+import com.WebTechProjekt.Expense_Tracker.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -55,5 +56,11 @@ public class UserService {
     }
         // Token erstellen für erfolgreich authentifizierten Benutzer
         return jwtService.generateToken(storedUser.getUsername());
+    }
+
+    public User getUser() {
+        String currentUser = SecurityUtils.getCurrentUsername();
+        User user = userRepo.findByUsername(currentUser).orElse(null);
+        return user;
     }
 }
