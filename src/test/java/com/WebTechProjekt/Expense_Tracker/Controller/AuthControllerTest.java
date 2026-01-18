@@ -1,6 +1,8 @@
 package com.WebTechProjekt.Expense_Tracker.Controller;
 
 import com.WebTechProjekt.Expense_Tracker.Entity.User;
+import com.WebTechProjekt.Expense_Tracker.Service.JWTService;
+import com.WebTechProjekt.Expense_Tracker.Service.MyUserDetailsService;
 import com.WebTechProjekt.Expense_Tracker.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
+import com.WebTechProjekt.Expense_Tracker.Config.SecurityConfig;
+import com.WebTechProjekt.Expense_Tracker.Config.JwtFilter;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -25,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Testet die REST-Endpunkte mit MockMvc.
  */
 @WebMvcTest(AuthController.class)
+@Import({SecurityConfig.class, JwtFilter.class})
 class AuthControllerTest {
 
     @Autowired
@@ -36,6 +43,14 @@ class AuthControllerTest {
     @SuppressWarnings("removal")
     @MockBean
     private UserService userService;
+
+    @SuppressWarnings("removal")
+    @MockBean
+    private JWTService jwtService;
+
+    @SuppressWarnings("removal")
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
 
     @Test
     void testRegister_ShouldReturnCreatedUser() throws Exception {
