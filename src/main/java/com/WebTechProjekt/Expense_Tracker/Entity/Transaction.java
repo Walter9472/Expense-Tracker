@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
     private String title;             // z. B. "Einkauf im Supermarkt"
     private BigDecimal amount;
     private LocalDate date;
