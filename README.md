@@ -1,67 +1,41 @@
-# Expense Tracker
+# Expense Tracker - Backend
 
-Nutzer verwalten Einnahmen, Ausgaben, Kategorien und Budgets.
+Dieses Projekt stellt das Backend für die Expense Tracker Anwendung dar. Es ist als RESTful API mit Spring Boot konzipiert und verwaltet Benutzer, Kategorien sowie Transaktionen.
 
-**Expense Tracker – WebTech Projekt**
+## Features
+- **JWT-Authentifizierung**: Sicherer Zugriffsschutz durch JSON Web Tokens.
+- **Benutzerverwaltung**: Registrierung und Login.
+- **Transaktions-CRUD**: Vollständige Verwaltung von Einnahmen und Ausgaben.
+- **Kategoriemanagement**: Unterstützung für globale Standardkategorien und benutzerdefinierte Kategorien.
+- **Datenbank-Anbindung**: Nutzung von PostgreSQL für die persistente Speicherung.
+- **Sicherheitskonfiguration**: Umfassende CORS-Einstellungen für die Frontend-Backend-Kommunikation.
 
-Der Expense Tracker ist eine moderne Webanwendung, mit der Benutzer ihre Einnahmen und Ausgaben übersichtlich verwalten, kategorisieren und analysieren können. Ziel des Projekts ist es, ein benutzerfreundliches Finanz-Management-Tool zu entwickeln, das sowohl im Frontend als auch im Backend auf saubere, strukturierte und moderne Technologien setzt.
+## Technologiestack
+- **Framework**: Spring Boot 3.x
+- **Sprache**: Java 17+
+- **Sicherheit**: Spring Security, JWT (io.jsonwebtoken)
+- **Datenbank**: PostgreSQL, Spring Data JPA (Hibernate)
+- **Testing**: JUnit 5, Mockito
 
-**Projektziele**
+## Installation & Setup (Lokal)
+1. **Repository klonen**
+2. **Datenbank vorbereiten**: Stellen Sie sicher, dass PostgreSQL läuft und eine Datenbank vorhanden ist.
+3. **Konfiguration**: Passen Sie die `src/main/resources/application.properties` an:
+   ```properties
+   spring.datasource.url=jdbc:postgresql://localhost:5432/deine_db
+   spring.datasource.username=dein_nutzer
+   spring.datasource.password=dein_passwort
+   ```
+4. **Starten**: Führen Sie `./gradlew bootRun` aus.
 
-- **Nutzerfreundliche Oberfläche**: Ein intuitives Interface zur Erfassung und Verwaltung von Transaktionen.  
-- **Übersicht**: Klare Darstellung von Ausgaben und Einnahmen, strukturiert nach Kategorien.  
-- **Automatische Einrichtung**: Bei der Registrierung werden Standardkategorien automatisch eingerichtet.  
-- **Filter- und Sortierfunktionen**: Transaktionen können nach Datum, Kategorie oder Betrag gefiltert und sortiert werden.  
-- **Statistik und Diagramme**: Grundlage für aussagekräftige Auswertungen im Frontend.
+## Deployment auf Render
+Das Project ist für das Deployment auf Render vorkonfiguriert. Folgende Umgebungsvariablen müssen gesetzt werden:
+- `PORT`: Der Port, auf dem die App läuft (Standard: 8080).
+- `DATABASE_URL`: JDBC-URL für die PostgreSQL-Datenbank (wird oft automatisch von Render bereitgestellt).
+- `APP_CORS_ALLOWED_ORIGINS`: Kommagetrennte Liste der erlaubten Frontend-URLs (z.B. `https://dein-frontend.onrender.com`).
 
-**Backend (Spring Boot)**
+## Dokumentation
+Der gesamte Programmcode (Services und Security-Komponenten) ist ausführlich auf **Deutsch** (Javadoc-Stil) dokumentiert, um die Wartbarkeit und das Verständnis zu erleichtern.
 
-Das Backend stellt eine RESTful API bereit und ist in Java (Spring Boot) entwickelt.  
-Verantwortlichkeiten:
-
-- **User-Authentifizierung**: Registrierung, Login und Benutzerverwaltung.  
-- **Transaktionsmanagement**: Verwaltung von Einnahmen und Ausgaben.  
-- **Kategorisierung**: Unterstützung sowohl standardisierter als auch benutzerdefinierter Kategorien.  
-- **Berichte und Filterung**: Bereitstellung von Filtermöglichkeiten und Berichten.  
-
-Struktur:
-
-- **Entities**:
-  - `User` – Repräsentiert den Benutzer.
-  - `Transaction` – Speichert Details zu Ausgaben und Einnahmen.
-  - `Category` – Ordnet Transaktionen den jeweiligen Kategorien zu.
-- **Datenbank**: Speicherung der Daten über JPA in einer relationalen Datenbank.
-
-**Frontend**
-
-Das Frontend (mit Vue.js) soll es den Benutzern ermöglichen:
-
-- Transaktionen zu erstellen, zu bearbeiten und zu löschen.
-- Diagramme und Statistiken einzusehen.
-- Filter nach Zeitraum und Kategorie anzuwenden.
-
-**Verwendete Technologien**
-
-- **Backend**: Java, Spring Boot, JPA/Hibernate
-- **Frontend**: Vue.js
-- **Datenbank**: PostgreSQL
-- **Tools**: Maven, GitHub, REST API, JUnit (Tests)
-
-**Beispiel-Use-Cases**
-
-- **Registrierung**: Der Benutzer registriert sich und erhält automatisch Standardkategorien.  
-- **Ausgabe erfassen**: Der Benutzer legt eine neue Ausgabe an (z. B. „Essen“, 25 €).  
-- **Filterung**: Transaktionen können nach der Kategorie „Essen“ gefiltert werden.  
-- **Monatsübersicht**: Zusammenfassung der monatlichen Ausgaben.
-
-
-
-## Deployment-Hinweis (Render & Co.)
-
-Damit das gehostete Frontend mit dem Backend kommunizieren kann, muss die erlaubte Origin des Frontends in der Spring-Konfiguration hinterlegt werden. Dies geschieht über die Property `app.cors.allowed-origins` (siehe `src/main/resources/application.properties`). Sie akzeptiert eine kommagetrennte Liste, z. B.:
-
-```
-app.cors.allowed-origins=http://localhost:5173,https://mein-frontend.onrender.com
-```
-
-Beim Deployment auf Render kann der Wert komfortabel über eine Environment-Variable überschrieben werden, sodass sowohl lokale Entwicklung als auch Produktionsbetrieb ohne Codeänderungen funktionieren.
+---
+*Entwickelt im Rahmen des Moduls WebTechnologien.*
